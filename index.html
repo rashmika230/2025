@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome New Year 2025</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, 
+                #ff6b6b, 
+                #4ecdc4, 
+                #45b7d1, 
+                #f7b267, 
+                #6b5b95
+            );
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            background: var(--primary-gradient);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .firework {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: fireworkAnimation 1s ease-out;
+        }
+
+        @keyframes fireworkAnimation {
+            0% {
+                opacity: 1;
+                transform: scale(0);
+            }
+            70% {
+                opacity: 0.8;
+            }
+            100% {
+                opacity: 0;
+                transform: scale(2);
+            }
+        }
+
+        .countdown-box {
+            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .countdown-box:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .celebration-text {
+            text-shadow: 
+                0 0 10px rgba(255,255,255,0.7),
+                0 0 20px rgba(255,255,255,0.5),
+                0 0 30px rgba(255,255,255,0.3);
+            animation: celebrationPulse 2s infinite;
+        }
+
+        @keyframes celebrationPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+    <div id="fireworkContainer" class="fixed inset-0 pointer-events-none z-50"></div>
+    
+    <div class="text-center relative z-10">
+        <h1 class="text-6xl md:text-8xl font-bold text-white mb-8 animate-pulse">
+            New Year 2025
+        </h1>
+        
+        <div id="countdown" class="grid grid-cols-4 gap-4 mb-12">
+            <div class="countdown-box p-6 rounded-xl text-white">
+                <div id="days" class="text-4xl font-bold">00</div>
+                <div class="text-sm opacity-80">DAYS</div>
+            </div>
+            <div class="countdown-box p-6 rounded-xl text-white">
+                <div id="hours" class="text-4xl font-bold">00</div>
+                <div class="text-sm opacity-80">HOURS</div>
+            </div>
+            <div class="countdown-box p-6 rounded-xl text-white">
+                <div id="minutes" class="text-4xl font-bold">00</div>
+                <div class="text-sm opacity-80">MINUTES</div>
+            </div>
+            <div class="countdown-box p-6 rounded-xl text-white">
+                <div id="seconds" class="text-4xl font-bold">00</div>
+                <div class="text-sm opacity-80">SECONDS</div>
+            </div>
+        </div>
+
+        <div id="celebrationMessage" class="hidden text-6xl md:text-8xl font-bold text-white celebration-text">
+            Happy New Year 2025! 🎉
+        </div>
+    </div>
+
+    <script>
+        const colors = [
+            '#ff6b6b', '#4ecdc4', '#45b7d1', 
+            '#f7b267', '#6b5b95', '#ff9ff3', 
+            '#54a0ff', '#5f27cd'
+        ];
+
+        function createFirework(x, y) {
+            const fireworkContainer = document.getElementById('fireworkContainer');
+            const particleCount = 30;
+            const color = colors[Math.floor(Math.random() * colors.length)];
+
+            for (let i = 0; i < particleCount; i++) {
+                const angle = (i / particleCount) * Math.PI * 2;
+                const radius = Math.random() * 100;
+                
+                const particle = document.createElement('div');
+                particle.classList.add('firework');
+                particle.style.backgroundColor = color;
+                particle.style.left = `${x}px`;
+                particle.style.top = `${y}px`;
+                
+                particle.style.transform = `translate(-50%, -50%) rotate(${angle}deg) translateX(${radius}px)`;
+                
+                fireworkContainer.appendChild(particle);
+
+                setTimeout(() => {
+                    particle.remove();
+                }, 1000);
+            }
+        }
+
+        function startFireworkShow() {
+            const interval = setInterval(() => {
+                const x = Math.random() * window.innerWidth;
+                const y = Math.random() * window.innerHeight;
+                createFirework(x, y);
+            }, 500);
+
+            setTimeout(() => clearInterval(interval), 10000);
+        }
+
+        function updateCountdown() {
+            const countdownDate = new Date('January 1, 2025 00:00:00').getTime();
+            
+            const countdownTimer = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = countdownDate - now;
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById('days').innerText = days.toString().padStart(2, '0');
+                document.getElementById('hours').innerText = hours.toString().padStart(2, '0');
+                document.getElementById('minutes').innerText = minutes.toString().padStart(2, '0');
+                document.getElementById('seconds').innerText = seconds.toString().padStart(2, '0');
+
+                if (distance < 0) {
+                    clearInterval(countdownTimer);
+                    document.getElementById('countdown').classList.add('hidden');
+                    document.getElementById('celebrationMessage').classList.remove('hidden');
+                    startFireworkShow();
+                }
+            }, 1000);
+        }
+
+        updateCountdown();
+    </script>
+</body>
+</html>
